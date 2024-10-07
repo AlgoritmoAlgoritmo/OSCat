@@ -11,7 +11,6 @@ using UnityEngine.InputSystem;
 
 namespace OneShotCat.Prototype {
 	[RequireComponent(typeof(Rigidbody))]
-	[RequireComponent( typeof( PlayerInput ) )]
 	public class CharacterMovement : MonoBehaviour {
 		#region Variables
 		[SerializeField]
@@ -19,18 +18,19 @@ namespace OneShotCat.Prototype {
 		public float Speed { get; set; }
 
 		[SerializeField]
+		private PlayerInput playerInput;
+		[SerializeField]
 		private string actionName = "Move";
 
-
 		private Rigidbody rigidBody;
-		private PlayerInput playerInput;
 		private Vector3 direction = Vector3.zero;
 		#endregion
 
 		#region MonoBehaviour methods
 		private void Awake() {
 			rigidBody = GetComponent<Rigidbody>();
-			playerInput = GetComponent<PlayerInput>();
+			if( !playerInput )
+				playerInput = GetComponent<PlayerInput>();
 		}
 
         private void FixedUpdate() {

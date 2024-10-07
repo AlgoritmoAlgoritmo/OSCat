@@ -12,14 +12,11 @@ using UnityEngine.InputSystem;
 
 
 public class MouseLook : MonoBehaviour {
-	#region Variables
-	[SerializeField]
-	private PlayerInput playerInput;
-    [SerializeField]
-    private Transform xRotationTransform;
-    [SerializeField]
-    private Transform yRotationTransform;
-
+    #region Variables
+    public enum RotationAxes {
+        MouseX, MouseY
+    }
+    public RotationAxes axes = RotationAxes.MouseY;
 
     public static bool allowRotation = true;
 
@@ -43,16 +40,20 @@ public class MouseLook : MonoBehaviour {
     private float rotationY;
 
     private Quaternion originalRotation;
-
     #endregion
 
-    #region MonoBehaviour methods
-    private void FixedUpdate() {
-        
+    #region MonoBehaviour functions
+    private void Start() {
+        originalRotation = transform.rotation;
+    }
+
+    void FixedUpdate() {
+        HandleRotation();
     }
     #endregion
 
-    #region Private methods
+
+    #region Private functions
     private void HandleRotation() {
         if( currentSensitivityX != mouseSensitivity
             || currentSensitivityY != mouseSensitivity ) {
@@ -62,12 +63,14 @@ public class MouseLook : MonoBehaviour {
         mouseSensitivity = currentSensitivityX;
         mouseSensitivity = currentSensitivityY;
 
-        if( axes == RotationAxes.MouseX ) {
-            rotationX += Input.GetAxis( "Mouse X" ) * mouseSensitivity;
+        if( axes == RotationAxes.MouseX  ) {
+            rotationX += Input.GetAxis( "Mouse X" ) * mouseSensitivity;            
 
             rotationX = ClampAngle( rotationX, minimumX, maximumX );
             Quaternion xQuaternion = Quaternion.AngleAxis( rotationX, Vector3.up );
             transform.localRotation = originalRotation * xQuaternion;
+
+
         } else if( axes == RotationAxes.MouseY ) {
             rotationY += Input.GetAxis( "Mouse Y" ) * mouseSensitivity;
 
@@ -88,5 +91,15 @@ public class MouseLook : MonoBehaviour {
         return Mathf.Clamp( angle, min, max );
     }
 
+
+    private void CursorControl() {
+        if( Input.GetKeyDown( KeyCode.Tab ) ) {
+            if( Cursor.lockState == CursorLockMode.Locked ) {
+                Cursor.lockState = CursorLockMode.None;
+            } else {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+    }
     #endregion
 }
