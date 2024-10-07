@@ -22,8 +22,9 @@ namespace OneShotCat.Prototype {
 		private string actionName = "Move";
 
 
-		private  Rigidbody rigidBody;
+		private Rigidbody rigidBody;
 		private PlayerInput playerInput;
+		private Vector3 direction = Vector3.zero;
 		#endregion
 
 		#region Public methods
@@ -38,8 +39,10 @@ namespace OneShotCat.Prototype {
         #endregion
 
         #region Private methods
-        private void Move( Vector3 _direction ) {
-			rigidBody.velocity = _direction * speed;
+        private void Move( Vector2 _inputValue ) {
+			direction.x = _inputValue.x;
+			direction.z = _inputValue.y;
+			rigidBody.velocity = direction * speed;
 		}
 		#endregion
 	}
