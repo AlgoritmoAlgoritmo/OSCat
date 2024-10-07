@@ -24,6 +24,7 @@ namespace OneShotCat.Prototype {
 
 		private Rigidbody rigidBody;
 		private Vector3 direction = Vector3.zero;
+		private Vector2 inputValue;
 		#endregion
 
 		#region MonoBehaviour methods
@@ -34,15 +35,17 @@ namespace OneShotCat.Prototype {
 		}
 
         private void FixedUpdate() {
-			Move( playerInput.actions[actionName].ReadValue<Vector2>() );
-		}
+			Move();
+        }
         #endregion
 
         #region Private methods
-        private void Move( Vector2 _inputValue ) {
-			direction.x = _inputValue.x;
-			direction.z = _inputValue.y;
-			rigidBody.velocity = direction * speed;
+        public void Move() {
+			inputValue = playerInput.actions[actionName].ReadValue<Vector2>();
+			direction.x = inputValue.x;
+			direction.z = inputValue.y;
+
+			rigidBody.velocity = rigidBody.rotation * direction * speed;
 		}
 		#endregion
 	}

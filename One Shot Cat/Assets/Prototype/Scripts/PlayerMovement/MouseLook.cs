@@ -5,101 +5,100 @@
 */
 
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 
-public class MouseLook : MonoBehaviour {
-    #region Variables
-    public enum RotationAxes {
-        MouseX, MouseY
-    }
-    public RotationAxes axes = RotationAxes.MouseY;
+namespace OneShotCat.Prototype {
+    public class MouseLook : MonoBehaviour {
+        #region Variables
+        public enum RotationAxes {
+            MouseX, MouseY
+        }
+        public RotationAxes axes = RotationAxes.MouseY;
 
-    public static bool allowRotation = true;
+        public static bool allowRotation = true;
 
-    [SerializeField]
-    private float mouseSensitivity = 1.7f;
+        [SerializeField]
+        private float mouseSensitivity = 1.7f;
 
-    [SerializeField]
-    private float minimumX = -360f;
-    [SerializeField]
-    private float maximumX = 360f;
+        [SerializeField]
+        private float minimumX = -360f;
+        [SerializeField]
+        private float maximumX = 360f;
 
-    [SerializeField]
-    private float minimumY = -60f;
-    [SerializeField]
-    private float maximumY = 60f;
+        [SerializeField]
+        private float minimumY = -60f;
+        [SerializeField]
+        private float maximumY = 60f;
 
-    private float currentSensitivityX = 1.5f;
-    private float currentSensitivityY = 1.5f;
+        private float currentSensitivityX = 1.5f;
+        private float currentSensitivityY = 1.5f;
 
-    private float rotationX;
-    private float rotationY;
+        private float rotationX;
+        private float rotationY;
 
-    private Quaternion originalRotation;
-    #endregion
+        private Quaternion originalRotation;
+        #endregion
 
-    #region MonoBehaviour functions
-    private void Start() {
-        originalRotation = transform.rotation;
-    }
-
-    void FixedUpdate() {
-        HandleRotation();
-    }
-    #endregion
-
-
-    #region Private functions
-    private void HandleRotation() {
-        if( currentSensitivityX != mouseSensitivity
-            || currentSensitivityY != mouseSensitivity ) {
-            currentSensitivityX = currentSensitivityY = mouseSensitivity;
+        #region MonoBehaviour functions
+        private void Start() {
+            originalRotation = transform.rotation;
         }
 
-        mouseSensitivity = currentSensitivityX;
-        mouseSensitivity = currentSensitivityY;
-
-        if( axes == RotationAxes.MouseX  ) {
-            rotationX += Input.GetAxis( "Mouse X" ) * mouseSensitivity;            
-
-            rotationX = ClampAngle( rotationX, minimumX, maximumX );
-            Quaternion xQuaternion = Quaternion.AngleAxis( rotationX, Vector3.up );
-            transform.localRotation = originalRotation * xQuaternion;
-
-
-        } else if( axes == RotationAxes.MouseY ) {
-            rotationY += Input.GetAxis( "Mouse Y" ) * mouseSensitivity;
-
-            rotationY = ClampAngle( rotationY, minimumY, maximumY );
-            Quaternion yQuaternion = Quaternion.AngleAxis( -rotationY, Vector3.right );
-            transform.localRotation = originalRotation * yQuaternion;
+        void FixedUpdate() {
+            HandleRotation();
         }
-    }
+        #endregion
 
 
-    private float ClampAngle( float angle, float min, float max ) {
-        if( angle < -360f ) {
-            angle += 360f;
-        } else if( angle > 360 ) {
-            angle -= 360f;
-        }
+        #region Private functions
+        private void HandleRotation() {
+            if( currentSensitivityX != mouseSensitivity
+                || currentSensitivityY != mouseSensitivity ) {
+                currentSensitivityX = currentSensitivityY = mouseSensitivity;
+            }
 
-        return Mathf.Clamp( angle, min, max );
-    }
+            mouseSensitivity = currentSensitivityX;
+            mouseSensitivity = currentSensitivityY;
+
+            if( axes == RotationAxes.MouseX ) {
+                rotationX += Input.GetAxis( "Mouse X" ) * mouseSensitivity;
+
+                rotationX = ClampAngle( rotationX, minimumX, maximumX );
+                Quaternion xQuaternion = Quaternion.AngleAxis( rotationX, Vector3.up );
+                transform.localRotation = originalRotation * xQuaternion;
 
 
-    private void CursorControl() {
-        if( Input.GetKeyDown( KeyCode.Tab ) ) {
-            if( Cursor.lockState == CursorLockMode.Locked ) {
-                Cursor.lockState = CursorLockMode.None;
-            } else {
-                Cursor.lockState = CursorLockMode.Locked;
+            } else if( axes == RotationAxes.MouseY ) {
+                rotationY += Input.GetAxis( "Mouse Y" ) * mouseSensitivity;
+
+                rotationY = ClampAngle( rotationY, minimumY, maximumY );
+                Quaternion yQuaternion = Quaternion.AngleAxis( -rotationY, Vector3.right );
+                transform.localRotation = originalRotation * yQuaternion;
             }
         }
+
+
+        private float ClampAngle( float angle, float min, float max ) {
+            if( angle < -360f ) {
+                angle += 360f;
+            } else if( angle > 360 ) {
+                angle -= 360f;
+            }
+
+            return Mathf.Clamp( angle, min, max );
+        }
+
+
+        private void CursorControl() {
+            if( Input.GetKeyDown( KeyCode.Tab ) ) {
+                if( Cursor.lockState == CursorLockMode.Locked ) {
+                    Cursor.lockState = CursorLockMode.None;
+                } else {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+            }
+        }
+        #endregion
     }
-    #endregion
 }
