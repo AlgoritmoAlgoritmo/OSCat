@@ -23,6 +23,11 @@ namespace OneShotCat.Prototype {
         private PlayerInput playerInput;
         [SerializeField]
         private string shootActionName = "Shoot";
+
+        [SerializeField]
+        private float maxAimingDistance = 500f;
+
+        private RaycastHit hit = new RaycastHit();
         #endregion
 
         #region MonoBehaviour
@@ -33,6 +38,8 @@ namespace OneShotCat.Prototype {
 
         #region Public methods
         public void Shoot() {
+            FixRotation();
+
             if( playerInput.actions[shootActionName].triggered ) {
                 InstantiateProjectile();
             }
@@ -40,6 +47,23 @@ namespace OneShotCat.Prototype {
         #endregion
 
         #region Private methods
+        private void FixRotation() {
+            // Raycasting from camera's position
+            if( Physics.Raycast( Camera.main.transform.position,
+                                Camera.main.transform.TransformDirection( Vector3.forward ),
+                                out hit,
+                                maxAimingDistance ) ) {
+                transform.LookAt( hit.point );
+                Debug.Log( "Did Hit" );
+
+            } else {
+                transform.LookAt( Camera.main.transform.TransformDirection( Vector3.forward ) * maxAimingDistance );
+                Debug.Log( "Did not Hit" );
+            }
+
+            Debug.Log("Something");
+        }
+
         private void InstantiateProjectile() {
             Instantiate( projectilePrefab, origin.position, origin.rotation );
         }
