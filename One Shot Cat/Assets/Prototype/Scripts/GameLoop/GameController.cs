@@ -17,13 +17,20 @@ namespace OneShotCat.Prototype {
         private ScoreController scoreController;
         #endregion
 
+
         #region MonoBehaviour
         private void Awake() {
             Cursor.lockState = CursorLockMode.Confined;
+
             if( !enemyManager )
                 enemyManager = FindObjectOfType<EnemyManager>();
         }
+
+        private void Start() {
+            Pause();
+        }
         #endregion
+
 
         #region Public methods
         public void EnemyDamaged( GameObject _enemyGameObject) {
@@ -31,7 +38,16 @@ namespace OneShotCat.Prototype {
 
             scoreController.IncreaseHighScore( 100 );
         }
+
+        public void Pause() {
+            Time.timeScale = 0;
+        }
+
+        public void Resume() {
+            Time.timeScale = 1;
+        }
         #endregion
+
 
         #region Private methods
         #endregion
