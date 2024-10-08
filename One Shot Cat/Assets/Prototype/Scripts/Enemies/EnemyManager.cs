@@ -17,13 +17,34 @@ namespace OneShotCat.Prototype {
         private List<NavMeshAgent> enemiesNavMeshAgents = new List<NavMeshAgent>();
 		[SerializeField]
 		private Transform playerTransform;
+
+        private List<GameObject> enemiesToDestroy = new List<GameObject>();
         #endregion
 
-        #region Public methods
+        #region MonoBehaviour methods
         private void FixedUpdate() {
             foreach( NavMeshAgent agent in enemiesNavMeshAgents ) {
-                agent.destination = playerTransform.position;
-            }            
+                if( agent.isActiveAndEnabled )
+                    agent.destination = playerTransform.position;
+            }
+
+            CheckEnemiesState();
+        }
+        #endregion
+
+
+        #region Public methods
+        public void DestroyEnemy( GameObject _enemyGameObject ) {
+            enemiesToDestroy.Add( _enemyGameObject );
+            _enemyGameObject.gameObject.SetActive( false );
+        }
+
+        public void CheckEnemiesState() {
+            for( int i = 0; enemiesToDestroy.Count > 0; i++ ) {
+                enemiesNavMeshAgents.Remove( enemiesToDestroy[0].GetComponent<NavMeshAgent>() );
+                GameObject.Destroy( enemiesToDestroy[0], 2f );
+                enemiesToDestroy.RemoveAt( 0 );
+            }
         }
         #endregion
     }

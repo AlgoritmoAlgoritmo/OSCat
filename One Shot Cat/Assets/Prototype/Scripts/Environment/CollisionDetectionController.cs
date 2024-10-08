@@ -19,12 +19,10 @@ namespace OneShotCat.Prototype {
 
         #region MonoBehaviour methods
         private void OnCollisionEnter( Collision collision ) {
-            Debug.Log( "OnCollisionEnter" );
             onCollisionEnter.Invoke( collision.gameObject );
         }
 
         private void OnTriggerEnter( Collider collider ) {
-            Debug.Log( "OnTriggerEnter" );
             onTriggerEnter.Invoke( collider.gameObject );
         }
         #endregion

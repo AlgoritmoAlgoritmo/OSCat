@@ -24,16 +24,15 @@ namespace OneShotCat.Prototype {
 
 
         private Rigidbody rigidBody;
-        private Vector3 eulerAngleVelocity;
-
+        private Vector3 eulerTargetRotation = Vector3.zero;
+        private Quaternion quaternionTargetRotation;
         #endregion
 
         #region MonoBehaviour
         private void Start() {
             rigidBody = GetComponent<Rigidbody>();
 
-            //Set the angular velocity of the Rigidbody (rotating around the Y axis, 100 deg/sec)
-            eulerAngleVelocity = Vector3.zero;
+            eulerTargetRotation.y = rigidBody.rotation.eulerAngles.y;
         }
 
         private void FixedUpdate() {
@@ -43,10 +42,10 @@ namespace OneShotCat.Prototype {
 
         #region Public methods
         public void Rotate() {
-            eulerAngleVelocity.y += ClampAngle( Input.GetAxis( "Mouse X" ) * mouseSensitivity * -1, minimumX, maximumX );
+            eulerTargetRotation.y += ClampAngle( (Input.GetAxis( "Mouse X" ) * mouseSensitivity), minimumX, maximumX );
 
-            Quaternion deltaRotation = Quaternion.Euler( -eulerAngleVelocity );
-            rigidBody.MoveRotation( deltaRotation );
+            quaternionTargetRotation = Quaternion.Euler( eulerTargetRotation );
+            rigidBody.rotation = quaternionTargetRotation;
         }
         #endregion
 
