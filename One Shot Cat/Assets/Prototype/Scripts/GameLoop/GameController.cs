@@ -20,8 +20,6 @@ namespace OneShotCat.Prototype {
 
         #region MonoBehaviour
         private void Awake() {
-            Cursor.lockState = CursorLockMode.Confined;
-
             if( !enemyManager )
                 enemyManager = FindObjectOfType<EnemyManager>();
         }
@@ -40,11 +38,15 @@ namespace OneShotCat.Prototype {
         }
 
         public void Pause() {
+            Cursor.lockState = CursorLockMode.None;
+            Screen.fullScreen = false;
             Time.timeScale = 0;
         }
 
         public void Resume() {
             Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            Screen.fullScreen = true;
         }
         #endregion
 
