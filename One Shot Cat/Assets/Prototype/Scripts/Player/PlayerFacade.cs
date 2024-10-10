@@ -17,6 +17,8 @@ namespace OneShotCat.Prototype {
 		private PlayerHPController hpController;
 		[SerializeField]
 		private List<string> enemyLayer = new List<string>();
+		[SerializeField]
+		private GameObject lookingBackCamera;
 
 		public ColliderDetection OnEnemyTouch = new ColliderDetection();
 		public UnityEvent OnPlayerDies = new UnityEvent();
@@ -28,12 +30,20 @@ namespace OneShotCat.Prototype {
 			hpController.Initialize();
 		}
 
-
         private void OnCollisionEnter( Collision collision ) {
 			if( enemyLayer.Contains( LayerMask.LayerToName(collision.gameObject.layer ) ) ) {
 				OnEnemyTouch.Invoke( collision.gameObject );
 			}
         }
+
+        private void FixedUpdate() {
+			if( Input.GetKeyDown(KeyCode.E) ) {
+				lookingBackCamera.SetActive( true );
+
+			} else if( Input.GetKeyUp( KeyCode.E ) ) {
+				lookingBackCamera.SetActive( false );
+			}
+		}
         #endregion
 
 

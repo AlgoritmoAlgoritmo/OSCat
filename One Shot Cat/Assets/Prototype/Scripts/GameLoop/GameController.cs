@@ -45,7 +45,7 @@ namespace OneShotCat.Prototype {
         }
 
         private void FixedUpdate() {
-            if( Input.GetKeyUp( KeyCode.Escape ) ) {
+            if( Input.GetKeyUp( KeyCode.Pause ) ) {
                 Pause();        
             }
         }
@@ -87,12 +87,12 @@ namespace OneShotCat.Prototype {
         }
 
         public void GameOver() {
+            Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             gameOverPanel.SetActive( true );
         }
 
         public void Restart() {
-            Time.timeScale = 0;
             SceneManager.LoadScene( 0 );
         }
         #endregion
