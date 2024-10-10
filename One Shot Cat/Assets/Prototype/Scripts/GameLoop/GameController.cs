@@ -14,6 +14,9 @@ namespace OneShotCat.Prototype {
         [SerializeField]
         private EnemyManager enemyManager;
         [SerializeField]
+        private PlayerFacade playerFacade;
+
+        [SerializeField]
         private ScoreController scoreController;
         [SerializeField]
         private GameObject pausePanel;
@@ -26,9 +29,13 @@ namespace OneShotCat.Prototype {
         private void Awake() {
             if( !enemyManager )
                 enemyManager = FindObjectOfType<EnemyManager>();
+
+            if( !playerFacade )
+                playerFacade = FindObjectOfType<PlayerFacade>();
         }
 
         private void Start() {
+            playerFacade.OnEnemyTouch.AddListener( PlayerTouchedByEnemy );
             mousePreferences.Initialize();
             Pause();
         }
@@ -43,8 +50,7 @@ namespace OneShotCat.Prototype {
 
         #region Public methods
         public void EnemyDamaged( GameObject _enemyGameObject) {
-            enemyManager.DestroyEnemy( _enemyGameObject );
-
+            DestroyEnemy( _enemyGameObject );
             scoreController.IncreaseHighScore( 100 );
         }
 
@@ -69,10 +75,19 @@ namespace OneShotCat.Prototype {
         public void SetMouseYSensitivity( float _sensitivity ) {
             mousePreferences.SetMouseYSensitivity( _sensitivity );
         }
+
+        public void PlayerTouchedByEnemy( GameObject _enemyGameObject ) {
+            playerFacade.DealDamage( 100 );
+            _enemyGameObject.GetComponent<Collider>().enabled = false;
+            DestroyEnemy( _enemyGameObject );
+        }
         #endregion
 
 
         #region Private methods
+        private void DestroyEnemy( GameObject _enemyGameObject ) {
+            enemyManager.DestroyEnemy( _enemyGameObject );
+        }
         #endregion
     }
 }

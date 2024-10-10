@@ -27,8 +27,4 @@ namespace OneShotCat.Prototype {
         }
         #endregion
     }
-
-    [System.Serializable]
-    public class ColliderDetection : UnityEvent<GameObject> {
-    }
 }
