@@ -44,7 +44,7 @@ namespace OneShotCat.Prototype {
         #region Public methods
         public void DestroyEnemy( GameObject _enemyGameObject ) {
             enemiesToDestroy.Add( _enemyGameObject );
-            _enemyGameObject.gameObject.SetActive( false );
+            _enemyGameObject.GetComponent<NavMeshAgent>().enabled = false ;
         }
 
         public void UpdateEnemiesState() {

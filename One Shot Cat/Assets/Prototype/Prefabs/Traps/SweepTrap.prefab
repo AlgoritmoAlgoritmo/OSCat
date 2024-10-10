@@ -65,6 +65,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6801435835048270012}
   - component: {fileID: 6801435835048270013}
+  - component: {fileID: 9107475689309649706}
   m_Layer: 0
   m_Name: SweepTrap
   m_TagString: Untagged
@@ -109,6 +110,19 @@ PlayableDirector:
     value: {fileID: 6801435835548771461}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &9107475689309649706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801435835048270015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c7db9bf0144053489ec4725d82b1275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  force: {x: -1000, y: 400, z: 0}
 --- !u!1 &6801435835442129888
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,6 +269,18 @@ MonoBehaviour:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: OneShotCat.Prototype.GameController, Assembly-CSharp
         m_MethodName: EnemyDamaged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 9107475689309649706}
+        m_TargetAssemblyTypeName: OneShotCat.Prototype.EjectionTrap, Assembly-CSharp
+        m_MethodName: ApplyForceToEnemy
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
