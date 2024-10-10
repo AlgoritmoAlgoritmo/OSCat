@@ -6,6 +6,7 @@
 
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 namespace OneShotCat.Prototype {
@@ -20,6 +21,8 @@ namespace OneShotCat.Prototype {
         private ScoreController scoreController;
         [SerializeField]
         private GameObject pausePanel;
+        [SerializeField]
+        private GameObject gameOverPanel;
         [SerializeField]
         private MousePreferences mousePreferences;
         #endregion
@@ -36,6 +39,7 @@ namespace OneShotCat.Prototype {
 
         private void Start() {
             playerFacade.OnEnemyTouch.AddListener( PlayerTouchedByEnemy );
+            playerFacade.OnPlayerDies.AddListener( GameOver );
             mousePreferences.Initialize();
             Pause();
         }
@@ -80,6 +84,16 @@ namespace OneShotCat.Prototype {
             playerFacade.DealDamage( 100 );
             _enemyGameObject.GetComponent<Collider>().enabled = false;
             DestroyEnemy( _enemyGameObject );
+        }
+
+        public void GameOver() {
+            Cursor.lockState = CursorLockMode.None;
+            gameOverPanel.SetActive( true );
+        }
+
+        public void Restart() {
+            Time.timeScale = 0;
+            SceneManager.LoadScene( 0 );
         }
         #endregion
 

@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 namespace OneShotCat.Prototype {
@@ -18,6 +19,7 @@ namespace OneShotCat.Prototype {
 		private List<string> enemyLayer = new List<string>();
 
 		public ColliderDetection OnEnemyTouch = new ColliderDetection();
+		public UnityEvent OnPlayerDies = new UnityEvent();
         #endregion
 
 
@@ -38,6 +40,9 @@ namespace OneShotCat.Prototype {
         #region Public methods
         public void DealDamage( int _amount ) {
 			hpController.DealDamage( _amount );
+
+			if( !hpController.IsAlive() )
+				OnPlayerDies.Invoke();
 		}
 		#endregion
 	}

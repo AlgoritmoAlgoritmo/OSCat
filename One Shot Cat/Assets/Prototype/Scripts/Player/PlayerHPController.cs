@@ -31,6 +31,10 @@ namespace OneShotCat.Prototype {
 			currentHP -= _damageAmount;
 			RefreshHealthBar();
 		}
+
+		public bool IsAlive() {
+			return currentHP > 0;
+		}
 		#endregion
 
 		#region Private methods
