@@ -54,14 +54,10 @@ namespace OneShotCat.Prototype {
                                 out hit,
                                 maxAimingDistance ) ) {
                 transform.LookAt( hit.point );
-                Debug.Log( "Did Hit" );
 
             } else {
                 transform.LookAt( Camera.main.transform.TransformDirection( Vector3.forward ) * maxAimingDistance );
-                Debug.Log( "Did not Hit" );
             }
-
-            Debug.Log("Something");
         }
 
         private void InstantiateProjectile() {

@@ -16,6 +16,13 @@ namespace OneShotCat.Prototype {
         #region Variables
         [SerializeField]
         private float mouseSensitivity = 1f;
+        public float MouseSensitivity {
+            get { return mouseSensitivity; }
+            set { 
+                mouseSensitivity = value;
+                Debug.Log( mouseSensitivity );
+            } 
+        }
 
         [SerializeField]
         private float minimumX = -360f;
@@ -25,7 +32,6 @@ namespace OneShotCat.Prototype {
 
         private Rigidbody rigidBody;
         private Vector3 eulerTargetRotation = Vector3.zero;
-        private Quaternion quaternionTargetRotation;
         #endregion
 
         #region MonoBehaviour
@@ -43,9 +49,7 @@ namespace OneShotCat.Prototype {
         #region Public methods
         public void Rotate() {
             eulerTargetRotation.y += ClampAngle( (Input.GetAxis( "Mouse X" ) * mouseSensitivity), minimumX, maximumX );
-
-            quaternionTargetRotation = Quaternion.Euler( eulerTargetRotation );
-            rigidBody.rotation = quaternionTargetRotation;
+            rigidBody.rotation = Quaternion.Euler( eulerTargetRotation );
         }
         #endregion
 

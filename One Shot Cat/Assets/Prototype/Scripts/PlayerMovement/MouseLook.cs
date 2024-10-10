@@ -20,6 +20,7 @@ namespace OneShotCat.Prototype {
 
         [SerializeField]
         private float mouseSensitivity = 1.7f;
+        public float MouseSensitivity { get; set; }
 
         [SerializeField]
         private float minimumX = -360f;
