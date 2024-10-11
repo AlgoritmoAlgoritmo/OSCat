@@ -123,6 +123,11 @@ namespace OneShotCat.Prototype {
         public void Restart() {
             SceneManager.LoadScene( 0 );
         }
+
+        public void TrapActivated() {
+            Debug.Log( "TrapActivated()" );
+            playerFacade.ActivateFarCamera();
+        }        
         #endregion
 
 
