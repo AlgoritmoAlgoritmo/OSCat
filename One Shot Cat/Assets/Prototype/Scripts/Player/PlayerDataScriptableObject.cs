@@ -1,22 +1,38 @@
 /*
 * Author: Iris Bermudez
 * GitHub: https://github.com/AlgoritmoAlgoritmo
-* Date: DD/MM/YYYY (DD/MM/YY)
+* Date: 11/10/2024 (DD/MM/YY)
 */
 
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerDataScriptableObject : MonoBehaviour {
-	#region Variables
-	#endregion
+namespace OneShotCat.Prototype {
+	[CreateAssetMenu(fileName = "new PlayerDataScriptableObject", menuName = "OneShotTraps/Player Data" )]
+	public class PlayerDataScriptableObject : ScriptableObject {
+		#region Variables
+		[SerializeField]
+		private int currentScore;
+		public int CurrentScore {
+			get {
+				return currentScore;
+			}
+			set {
+				currentScore = value;
+			} 
+		}
 
-	#region Public methods
-	#endregion
-
-	#region Private methods
-	#endregion
+		[SerializeField]
+		private int highestScore;
+		public int HighestScore {
+			get {
+				return highestScore;
+			}
+			set {
+				highestScore = value;
+			}
+		}
+		#endregion
+	}
 }

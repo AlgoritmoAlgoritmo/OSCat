@@ -16,9 +16,20 @@ namespace OneShotCat.Prototype {
         private EnemyManager enemyManager;
         [SerializeField]
         private PlayerFacade playerFacade;
+        [SerializeField]
+        private PlayerDataScriptableObject playerData;
+
 
         [SerializeField]
         private ScoreController scoreController;
+        [SerializeField]
+        private TMPro.TMP_Text currentScoreDisplay;
+        [SerializeField]
+        private TMPro.TMP_Text highestScoreDisplay;
+        [SerializeField]
+        private GameObject newRecordDisplay;
+
+
         [SerializeField]
         private GameObject pausePanel;
         [SerializeField]
@@ -38,9 +49,11 @@ namespace OneShotCat.Prototype {
         }
 
         private void Start() {
+            playerData.CurrentScore = 0;
             playerFacade.OnEnemyTouch.AddListener( PlayerTouchedByEnemy );
             playerFacade.OnPlayerDies.AddListener( GameOver );
             mousePreferences.Initialize();
+            gameOverPanel.SetActive( false );
             Pause();
         }
 
@@ -49,6 +62,13 @@ namespace OneShotCat.Prototype {
                 Pause();        
             }
         }
+
+        #if UNITY_EDITOR
+        private void OnApplicationQuit() {
+            playerData.CurrentScore = 0;
+            playerData.HighestScore = 0;
+        }
+        #endif
         #endregion
 
 
@@ -56,11 +76,11 @@ namespace OneShotCat.Prototype {
         public void EnemyDamaged( GameObject _enemyGameObject) {
             DestroyEnemy( _enemyGameObject );
             scoreController.IncreaseHighScore( 100 );
+            playerData.CurrentScore = scoreController.CurrentHighScore;
         }
 
         public void Pause() {
             Cursor.lockState = CursorLockMode.None;
-            Screen.fullScreen = false;
             pausePanel.SetActive( true );
             Time.timeScale = 0;
         }
@@ -68,7 +88,6 @@ namespace OneShotCat.Prototype {
         public void Resume() {
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
-            Screen.fullScreen = true;
             pausePanel.SetActive( false );
         }
 
@@ -87,9 +106,18 @@ namespace OneShotCat.Prototype {
         }
 
         public void GameOver() {
-            Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             gameOverPanel.SetActive( true );
+
+            currentScoreDisplay.text = playerData.CurrentScore.ToString();
+            highestScoreDisplay.text = playerData.HighestScore.ToString();
+
+            if( playerData.CurrentScore > playerData.HighestScore ) {
+                newRecordDisplay.SetActive( true );
+                playerData.HighestScore = playerData.CurrentScore;
+            }
+
+            Time.timeScale = 0;
         }
 
         public void Restart() {

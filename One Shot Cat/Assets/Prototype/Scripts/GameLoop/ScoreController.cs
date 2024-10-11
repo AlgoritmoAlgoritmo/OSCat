@@ -18,6 +18,11 @@ namespace OneShotCat.Prototype {
 		
 		[SerializeField]
 		private int currentHighScore;
+		public int CurrentHighScore {
+			get {
+				return currentHighScore;
+			}
+		}
 		#endregion
 
 		#region Constructors methods
