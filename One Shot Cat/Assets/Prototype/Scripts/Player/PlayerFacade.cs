@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.InputSystem;
 
 namespace OneShotCat.Prototype {
 	public class PlayerFacade : MonoBehaviour {
@@ -25,6 +25,19 @@ namespace OneShotCat.Prototype {
 		[SerializeField]
 		private Cinemachine.CinemachineBrain cinemachineBrain;
 
+
+		[Header( "Animation variables" )]
+		[SerializeField]
+		private AnimationController animationController;
+
+
+		[Header( "Input variables" )]
+		[SerializeField]
+		private PlayerInput playerInput;
+		[SerializeField]
+		private string movingActionName = "Move";
+
+
 		[Header( "Other variables" )]
 		[SerializeField]
 		private PlayerHPController hpController;
@@ -33,11 +46,16 @@ namespace OneShotCat.Prototype {
 
 		public ColliderDetection OnEnemyTouch = new ColliderDetection();
 		public UnityEvent OnPlayerDies = new UnityEvent();
-		#endregion
+        #endregion
 
 
-		#region MonoBehaviour methods
-		private void Start() {
+        #region MonoBehaviour methods
+        private void Awake() {
+			if( !playerInput )
+				playerInput = FindObjectOfType<PlayerInput>();
+		}
+
+        private void Start() {
 			hpController.Initialize();
 
 			if( !cinemachineBrain )
@@ -58,6 +76,14 @@ namespace OneShotCat.Prototype {
 			} else if( Input.GetKeyUp( KeyCode.E ) ) {
 				rearViewCamera.SetActive( false );
 			}
+
+
+			if( playerInput.actions[movingActionName].ReadValue<Vector2>() != Vector2.zero ) {
+				animationController.PlayMovingAnimation();
+
+			} else {
+				animationController.PlayIdleAnimation();
+			}
 		}
         #endregion
 
@@ -72,7 +98,6 @@ namespace OneShotCat.Prototype {
 
 		public void ActivateFarCamera() {
 			cinemachineBrain.m_DefaultBlend.m_Time = farViewCameraTransitionTimeInSeconds;
-			Debug.Log( "farCamera.SetActive( true )" );
 			farViewCamera.SetActive( true );
 			Invoke( "DeactivateFarCamera", farViewCameraActivationTimeInSeconds );
 		}
@@ -82,7 +107,6 @@ namespace OneShotCat.Prototype {
 		#region Private methods
 		private void DeactivateFarCamera() {
 			farViewCamera.SetActive( false );
-			Debug.Log( "farCamera.SetActive( false )" );
 		}
         #endregion
     }

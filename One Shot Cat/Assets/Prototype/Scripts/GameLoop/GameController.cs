@@ -125,7 +125,6 @@ namespace OneShotCat.Prototype {
         }
 
         public void TrapActivated() {
-            Debug.Log( "TrapActivated()" );
             playerFacade.ActivateFarCamera();
         }        
         #endregion
